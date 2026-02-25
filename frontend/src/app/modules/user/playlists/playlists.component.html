@@ -1,0 +1,46 @@
+<h2>My Playlists</h2>
+
+<div class="card">
+  <input [(ngModel)]="newPlaylist.name" placeholder="Playlist Name">
+  <input [(ngModel)]="newPlaylist.description" placeholder="Description">
+
+  <button (click)="create()" [disabled]="!canCreatePlaylist()">Create Playlist</button>
+</div>
+
+<hr>
+
+<div *ngFor="let playlist of playlists" class="card">
+  <p class="playlist-title"><strong>{{ playlist.name }}</strong></p>
+  <p>{{ playlist.description }}</p>
+
+  <input [(ngModel)]="editDrafts[playlist.id].name" placeholder="Edit name">
+  <input [(ngModel)]="editDrafts[playlist.id].description" placeholder="Edit description">
+  <div class="action-row">
+    <button (click)="update(playlist.id)">Update</button>
+    <button (click)="delete(playlist.id)">Delete</button>
+  </div>
+
+  <p><strong>Songs:</strong> {{ playlist.songIds.length || 0 }}</p>
+  <div class="song-add-row">
+    <select [(ngModel)]="songInput[playlist.id]">
+      <option *ngFor="let song of availableSongs" [ngValue]="song.id">
+        {{ song.title }} - {{ song.artist }}
+      </option>
+    </select>
+    <button
+      (click)="addSong(playlist.id)"
+      [disabled]="processingPlaylistIds.has(playlist.id)">
+      Add Song
+    </button>
+  </div>
+
+  <div *ngFor="let songId of playlist.songIds" class="song-row">
+    <span>{{ getSongLabel(songId) }}</span>
+    <button
+      (click)="removeSong(playlist.id, songId)"
+      [disabled]="processingPlaylistIds.has(playlist.id)">
+      Remove
+    </button>
+  </div>
+  <hr>
+</div>

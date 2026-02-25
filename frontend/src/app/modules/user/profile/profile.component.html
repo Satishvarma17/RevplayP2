@@ -1,0 +1,25 @@
+<div class="card">
+
+  <h2>My Profile</h2>
+
+  <p><strong>Username:</strong> {{ user.username }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>Profile Image URL:</strong></p>
+  <input [(ngModel)]="user.profileImage" />
+
+  <label>Display Name</label>
+  <input [(ngModel)]="user.displayName" />
+
+  <label>Bio</label>
+  <textarea [(ngModel)]="user.bio"></textarea>
+
+  <button (click)="updateProfile()">Save</button>
+
+  <hr>
+
+  <h3>Statistics</h3>
+  <p>Total Playlists: {{ stats.totalPlaylists }}</p>
+  <p>Total Favorites: {{ stats.totalFavorites }}</p>
+  <p>Total Listening Minutes: {{ stats.totalListeningMinutes }}</p>
+
+</div>
