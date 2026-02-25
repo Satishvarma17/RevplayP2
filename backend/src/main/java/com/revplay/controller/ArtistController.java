@@ -1,5 +1,6 @@
 package com.revplay.controller;
 
+<<<<<<< HEAD
 import com.revplay.dto.request.ArtistProfileUpdateRequest;
 import com.revplay.dto.response.ApiResponse;
 import com.revplay.dto.response.ArtistResponse;
@@ -48,5 +49,16 @@ public class ArtistController {
         return ResponseEntity.ok(
                 new ApiResponse<>(true, "Artist profile updated", response)
         );
+=======
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/artist")
+public class ArtistController {
+
+    @GetMapping("/dashboard")
+    public String artistDashboard() {
+        return "Artist Dashboard Access Granted";
+>>>>>>> origin/develop
     }
 }
