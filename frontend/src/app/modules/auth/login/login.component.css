@@ -1,0 +1,14 @@
+.auth-switch {
+  margin-top: 12px;
+}
+
+.auth-link {
+  color: #0a66c2;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.auth-link:hover {
+  color: #084d91;
+}
