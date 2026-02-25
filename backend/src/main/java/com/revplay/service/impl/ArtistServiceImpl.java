@@ -16,7 +16,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository artistRepository;
 
-//register
+ //register
     @Override
     public Artist registerArtist(Artist artist) {
 
