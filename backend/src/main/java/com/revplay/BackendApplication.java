@@ -1,4 +1,4 @@
-package com.revplay.backend;
+package com.revplay;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
