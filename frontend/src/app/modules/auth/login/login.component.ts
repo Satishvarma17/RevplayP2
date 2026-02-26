@@ -51,8 +51,13 @@ export class LoginComponent {
 
           const tokenRole = this.authService.getUserRole();
           if (tokenRole === 'ARTIST') {
+            const artistId = response?.data?.artistId;
+            if (artistId) {
+              this.authService.saveArtistId(artistId);
+            }
             this.router.navigate(['/artist/dashboard']);
           } else {
+            localStorage.removeItem('artistId');
             this.router.navigate(['/user/dashboard']);
           }
         } else {

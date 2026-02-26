@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ArtistService } from 'src/app/services/artist.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -44,12 +45,21 @@ export class ProfileComponent implements OnInit {
 
   loadProfile() {
     this.artistService.getArtistProfile(this.artistId)
-      .subscribe((res: any) => {
+      .subscribe({
+        next: (res: any) => {
+          this.profileData = res?.data;
 
-        this.profileData = res?.data;
-
-        if (this.profileData) {
-          this.profileForm.patchValue(this.profileData);
+          if (this.profileData) {
+            this.profileForm.patchValue(this.profileData);
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          if (err.status === 404) {
+            localStorage.removeItem('artistId');
+            this.router.navigate(['/artist/register']);
+          } else {
+            console.error(err);
+          }
         }
       });
   }

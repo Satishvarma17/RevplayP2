@@ -9,7 +9,8 @@ import { RegisterComponent } from './register/register.component';
 import { MySongsComponent } from './my-songs/my-songs.component';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent },
+  { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'register', component: RegisterComponent },   //register
   { path: 'upload-song', component: UploadSongComponent },
   { path: 'manage-albums', component: ManageAlbumsComponent },

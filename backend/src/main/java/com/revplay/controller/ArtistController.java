@@ -1,6 +1,5 @@
 package com.revplay.controller;
 
-<<<<<<< HEAD
 import com.revplay.dto.request.ArtistProfileUpdateRequest;
 import com.revplay.dto.response.ApiResponse;
 import com.revplay.dto.response.ArtistResponse;
@@ -10,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api/artists")
 @RequiredArgsConstructor
+
 public class ArtistController {
 
     private final ArtistService artistService;
@@ -49,16 +50,5 @@ public class ArtistController {
         return ResponseEntity.ok(
                 new ApiResponse<>(true, "Artist profile updated", response)
         );
-=======
-import org.springframework.web.bind.annotation.*;
-
-@RestController
-@RequestMapping("/api/artist")
-public class ArtistController {
-
-    @GetMapping("/dashboard")
-    public String artistDashboard() {
-        return "Artist Dashboard Access Granted";
->>>>>>> origin/develop
     }
 }
