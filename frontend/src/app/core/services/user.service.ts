@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { AuthService } from './auth.service';
 
 export interface UserProfile {
   username: string;
@@ -11,6 +12,8 @@ export interface UserProfile {
 }
 
 export interface UserProfileUpdate {
+  username: string;
+  email: string;
   displayName: string;
   bio: string;
   profileImage: string;
@@ -30,7 +33,7 @@ export class UserService {
   private baseUrl = 'http://localhost:8080/api/users';
   private statsChangedSubject = new Subject<void>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getProfile(username: string = this.getUsername()): Observable<UserProfile> {
     return this.http.get<UserProfile>(`${this.baseUrl}/profile?username=${encodeURIComponent(username)}`);
@@ -53,10 +56,6 @@ export class UserService {
   }
 
   private getUsername(): string {
-    const username = localStorage.getItem('username') || localStorage.getItem('identifier') || 'satish';
-    if (!localStorage.getItem('username') && username) {
-      localStorage.setItem('username', username);
-    }
-    return username.trim();
+    return this.authService.getCurrentUsername();
   }
 }

@@ -1,5 +1,5 @@
 <div class="app-shell">
-  <header class="top-nav">
+  <header class="top-nav" *ngIf="authService.isLoggedIn()">
     <div class="brand">RevPlay</div>
     <nav class="nav-links">
       <a routerLink="/browse" routerLinkActive="active">Browse</a>

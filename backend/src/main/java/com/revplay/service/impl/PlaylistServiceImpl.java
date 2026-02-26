@@ -3,6 +3,7 @@ package com.revplay.service.impl;
 import com.revplay.dto.response.PlaylistResponse;
 import com.revplay.entity.Playlist;
 import com.revplay.entity.PlaylistSong;
+import com.revplay.entity.Role;
 import com.revplay.entity.User;
 import com.revplay.repository.PlaylistRepository;
 import com.revplay.repository.PlaylistSongRepository;
@@ -11,6 +12,7 @@ import com.revplay.service.PlaylistService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -131,6 +133,9 @@ public class PlaylistServiceImpl implements PlaylistService {
         user.setUsername(username);
         user.setEmail(username + "@revplay.local");
         user.setPassword("placeholder");
+        user.setRole(Role.USER);
+        user.setEnabled(true);
+        user.setCreatedAt(LocalDateTime.now());
         user.setDisplayName("New Listener");
         user.setBio("Add your bio");
         user.setProfileImage("https://placehold.co/120x120");

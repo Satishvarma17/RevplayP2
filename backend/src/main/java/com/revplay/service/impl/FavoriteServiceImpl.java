@@ -1,12 +1,15 @@
 package com.revplay.service.impl;
 
 import com.revplay.entity.Favorite;
+import com.revplay.entity.Role;
 import com.revplay.entity.User;
 import com.revplay.repository.FavoriteRepository;
 import com.revplay.repository.UserRepository;
 import com.revplay.service.FavoriteService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,6 +78,9 @@ public class FavoriteServiceImpl implements FavoriteService {
         user.setUsername(username);
         user.setEmail(username + "@revplay.local");
         user.setPassword("placeholder");
+        user.setRole(Role.USER);
+        user.setEnabled(true);
+        user.setCreatedAt(LocalDateTime.now());
         user.setDisplayName("New Listener");
         user.setBio("Add your bio");
         user.setProfileImage("https://placehold.co/120x120");

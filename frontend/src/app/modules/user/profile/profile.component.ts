@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { UserProfile, UserService, UserStats } from 'src/app/core/services/user.service';
 
 @Component({
@@ -16,6 +18,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
     bio: '',
     profileImage: ''
   };
+  editableUser: UserProfile = {
+    username: '',
+    email: '',
+    displayName: '',
+    bio: '',
+    profileImage: ''
+  };
+  isEditMode = false;
+  isSaving = false;
   stats: UserStats = {
     totalPlaylists: 0,
     totalFavorites: 0,
@@ -23,7 +34,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   };
   private statsChangedSub?: Subscription;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadProfile();
@@ -41,6 +56,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userService.getProfile().subscribe({
       next: (res) => {
         this.user = res;
+        this.editableUser = { ...res };
       }
     });
   }
@@ -53,20 +69,50 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateProfile(): void {
+  toggleProfileEdit(): void {
+    if (!this.isEditMode) {
+      this.editableUser = { ...this.user };
+      this.isEditMode = true;
+      return;
+    }
+
+    this.saveProfile();
+  }
+
+  private saveProfile(): void {
+    if (this.isSaving) {
+      return;
+    }
+
+    this.isSaving = true;
     this.userService.updateProfile({
-      displayName: this.user.displayName,
-      bio: this.user.bio,
-      profileImage: this.user.profileImage
+      username: this.editableUser.username,
+      email: this.editableUser.email,
+      displayName: this.editableUser.displayName,
+      bio: this.editableUser.bio,
+      profileImage: this.editableUser.profileImage
     }).subscribe({
       next: (res) => {
+        const previousUsername = this.user.username;
         this.user = res;
+        this.editableUser = { ...res };
+        if (res.username && res.username !== previousUsername) {
+          this.authService.setCurrentUsername(res.username);
+        }
+        this.isEditMode = false;
+        this.isSaving = false;
         this.loadStats();
         alert('Profile updated successfully');
       },
       error: () => {
+        this.isSaving = false;
         alert('Failed to update profile');
       }
     });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/home/login']);
   }
 }

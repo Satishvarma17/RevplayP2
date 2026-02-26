@@ -2,18 +2,20 @@
 
   <h2>My Profile</h2>
 
-  <p><strong>Username:</strong> {{ user.username }}</p>
-  <p><strong>Email:</strong> {{ user.email }}</p>
-  <p><strong>Profile Image URL:</strong></p>
-  <input [(ngModel)]="user.profileImage" />
+  <label>Username</label>
+  <input [(ngModel)]="editableUser.username" [disabled]="!isEditMode || isSaving" />
+
+  <label>Email</label>
+  <input [(ngModel)]="editableUser.email" [disabled]="!isEditMode || isSaving" />
 
   <label>Display Name</label>
-  <input [(ngModel)]="user.displayName" />
+  <input [(ngModel)]="editableUser.displayName" [disabled]="!isEditMode || isSaving" />
 
   <label>Bio</label>
-  <textarea [(ngModel)]="user.bio"></textarea>
+  <textarea [(ngModel)]="editableUser.bio" [disabled]="!isEditMode || isSaving"></textarea>
 
-  <button (click)="updateProfile()">Save</button>
+  <button (click)="toggleProfileEdit()" [disabled]="isSaving">{{ isEditMode ? 'Save' : 'Update' }}</button>
+  <button (click)="logout()">Logout</button>
 
   <hr>
 

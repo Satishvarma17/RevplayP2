@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 export interface Playlist {
   id: number;
@@ -14,7 +15,7 @@ export class PlaylistService {
 
   private baseUrl = 'http://localhost:8080/api/playlists';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   create(data: { name: string; description: string }, username: string = this.getUsername()): Observable<Playlist> {
     return this.http.post<Playlist>(`${this.baseUrl}?username=${encodeURIComponent(username)}`, data);
@@ -41,10 +42,6 @@ export class PlaylistService {
   }
 
   private getUsername(): string {
-    const username = localStorage.getItem('username') || localStorage.getItem('identifier') || 'satish';
-    if (!localStorage.getItem('username') && username) {
-      localStorage.setItem('username', username);
-    }
-    return username.trim();
+    return this.authService.getCurrentUsername();
   }
 }
