@@ -1,24 +1,28 @@
 package com.revplay.service;
 
-import com.revplay.dto.AlbumDetailsDTO;
-import com.revplay.dto.SongDTO;
-import org.springframework.data.domain.Page;
+import com.revplay.dto.request.SongUpdateRequest;
+import com.revplay.dto.request.SongUploadRequest;
+import com.revplay.dto.response.SongResponse;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
+import com.revplay.entity.Visibility;
+import java.util.List;
 
 public interface SongService {
 
-    Page<SongDTO> getAllSongs(int page,
-                              int size,
-                              String title,
-                              String genre,
-                              String album,
-                              Integer releaseYear,
-                              String sort);
+    SongResponse uploadSong(Long artistId, SongUploadRequest request, MultipartFile file);
 
-    SongDTO getSongById(Long id);
+    SongResponse addSongToAlbum(Long artistId, Long songId, Long albumId);
 
-    AlbumDetailsDTO getAlbumById(Long id);
+    List<SongResponse> getSongsByArtist(Long artistId);
 
-    Map<String, Object> globalSearch(String keyword);
+    List<SongResponse> getPublicSongs();
+
+    SongResponse updateSong(Long artistId, Long songId, SongUpdateRequest request);
+
+    SongResponse removeSongFromAlbum(Long artistId, Long songId);
+
+    SongResponse updateVisibility(Long artistId, Long songId, Visibility visibility);
+
+    void deleteSong(Long artistId, Long songId);
 }

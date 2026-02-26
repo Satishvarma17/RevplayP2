@@ -1,0 +1,47 @@
+<h2>My Songs</h2>
+
+<div *ngIf="songs.length === 0">
+  No songs uploaded yet.
+</div>
+
+<div *ngFor="let song of songs" class="song-card">
+
+  <div class="song-info">
+    <h3>{{ song.title }}</h3>
+    <p><b>Genre:</b> {{ song.genre }}</p>
+    <p><b>Duration:</b> {{ song.duration }} sec</p>
+    <p><b>Visibility:</b> {{ song.visibility }}</p>
+  </div>
+ 
+   <button (click)="startEdit(song)">Edit</button>
+
+<div *ngIf="editingSongId === song.id">
+
+  <input [(ngModel)]="editForm.title" placeholder="Title">
+  <input [(ngModel)]="editForm.genre" placeholder="Genre">
+  <input [(ngModel)]="editForm.duration" type="number" placeholder="Duration">
+
+  <select [(ngModel)]="editForm.visibility">
+    <option value="PUBLIC">PUBLIC</option>
+    <option value="UNLISTED">UNLISTED</option>
+  </select>
+
+  <button (click)="updateSong(song.id)">Save</button>
+  <button (click)="cancelEdit()">Cancel</button>
+
+</div>
+   
+  <div class="song-actions">
+    <button (click)="toggleVisibility(song)">
+      Toggle Visibility
+    </button>
+
+    <button (click)="deleteSong(song.id)">
+      Delete
+    </button>
+  </div>
+
+</div>
+
+<br>
+<a routerLink="/artist">Back to Dashboard</a>

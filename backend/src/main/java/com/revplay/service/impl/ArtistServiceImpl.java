@@ -1,66 +1,74 @@
 package com.revplay.service.impl;
 
-
-import com.revplay.dto.AlbumDTO;
-import com.revplay.dto.ArtistProfileDTO;
-import com.revplay.dto.SongDTO;
+import com.revplay.dto.request.ArtistProfileUpdateRequest;
+import com.revplay.dto.response.ArtistResponse;
 import com.revplay.entity.Artist;
-import com.revplay.exception.ResourceNotFoundException;
 import com.revplay.repository.ArtistRepository;
 import com.revplay.service.ArtistService;
-
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository artistRepository;
 
+ //register
     @Override
-    public ArtistProfileDTO getArtistProfile(Long id) {
+    public Artist registerArtist(Artist artist) {
 
-        log.info("Fetching artist profile with ID: {}", id);
+        return artistRepository.save(artist);
+    }
 
-        Artist artist = artistRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Artist not found with ID: {}", id);
-                    return new ResourceNotFoundException("Artist not found");
-                });
+    @Override
+    public ArtistResponse getArtistProfile(Long artistId) {
 
-        List<AlbumDTO> albums = artist.getAlbums().stream()
-                .map(album -> new AlbumDTO(
-                        album.getId(),
-                        album.getName(),
-                        album.getReleaseDate(),
-                        album.getSongs().stream()
-                                .map(song -> new SongDTO(
-                                        song.getId(),
-                                        song.getTitle(),
-                                        song.getGenre(),
-                                        song.getDuration(),
-                                        song.getReleaseDate(),
-                                        artist.getId(),
-                                        artist.getName(),
-                                        album.getId(),
-                                        album.getName()
-                                ))
-                                .toList()
-                ))
-                .toList();
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new EntityNotFoundException("Artist not found"));
 
-        return new ArtistProfileDTO(
-                artist.getId(),
-                artist.getName(),
-                artist.getBio(),
-                artist.getGenre(),
-                albums
-        );
+        return mapToResponse(artist);
+    }
+
+    @Transactional
+    @Override
+    public ArtistResponse updateArtistProfile(Long artistId,
+                                              ArtistProfileUpdateRequest request) {
+
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new EntityNotFoundException("Artist not found"));
+
+        artist.setArtistName(request.getArtistName());
+        artist.setBio(request.getBio());
+        artist.setGenre(request.getGenre());
+        artist.setInstagramLink(request.getInstagramLink());
+        artist.setTwitterLink(request.getTwitterLink());
+        artist.setYoutubeLink(request.getYoutubeLink());
+        artist.setWebsiteLink(request.getWebsiteLink());
+
+        artistRepository.save(artist);
+
+        return mapToResponse(artist);
+    }
+    // ================= DTO MAPPING =================
+
+    private ArtistResponse mapToResponse(Artist artist) {
+
+        return ArtistResponse.builder()
+                .id(artist.getId())
+                .artistName(artist.getArtistName())
+                .email(artist.getEmail())
+                .bio(artist.getBio())
+                .genre(artist.getGenre())
+                .profileImageUrl(artist.getProfileImageUrl())
+                .bannerImageUrl(artist.getBannerImageUrl())
+                .instagramLink(artist.getInstagramLink())
+                .twitterLink(artist.getTwitterLink())
+                .youtubeLink(artist.getYoutubeLink())
+                .websiteLink(artist.getWebsiteLink())
+                .createdAt(artist.getCreatedAt())
+                .build();
     }
 }

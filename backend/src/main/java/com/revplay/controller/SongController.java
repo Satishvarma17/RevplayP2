@@ -1,60 +1,130 @@
 package com.revplay.controller;
 
-import com.revplay.dto.AlbumDetailsDTO;
-import com.revplay.dto.SongDTO;
+import com.revplay.dto.request.SongUpdateRequest;
+import com.revplay.dto.request.SongUploadRequest;
+import com.revplay.dto.response.ApiResponse;
+import com.revplay.dto.response.SongResponse;
 import com.revplay.service.SongService;
-
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.revplay.entity.Visibility;
 
-import java.util.Map;
+import java.util.List;
 
-@Slf4j
 @RestController
-@RequestMapping("/api/music")
+@RequestMapping("/api/artists/{artistId}/songs")
 @RequiredArgsConstructor
 public class SongController {
 
     private final SongService songService;
 
-    @GetMapping("/songs")
-    public Page<SongDTO> getSongs(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String genre,
-            @RequestParam(required = false) String album,
-            @RequestParam(required = false) Integer releaseYear,
-            @RequestParam(defaultValue = "title,asc") String sort
-    ) {
+    // Upload Song
+    @PostMapping(value = "/upload", consumes = "multipart/form-data")
+    public ResponseEntity<ApiResponse<SongResponse>> uploadSong(
+            @PathVariable Long artistId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("title") String title,
+            @RequestParam("genre") String genre,
+            @RequestParam("duration") Integer duration,
+            @RequestParam("visibility") Visibility visibility) {
 
-        log.info("Incoming request to fetch songs");
+        SongUploadRequest request = SongUploadRequest.builder()
+                .title(title)
+                .genre(genre)
+                .duration(duration)
+                .visibility(visibility)
+                .build();
 
-        return songService.getAllSongs(page, size, title, genre, album, releaseYear, sort);
+        SongResponse response = songService.uploadSong(artistId, request, file);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Song uploaded successfully", response)
+        );
     }
 
-    @GetMapping("/songs/{id}")
-    public SongDTO getSongById(@PathVariable Long id) {
 
-        log.info("Incoming request to fetch song with ID: {}", id);
+    // Get All Songs of Artist
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<SongResponse>>> getSongsByArtist(
+            @PathVariable Long artistId) {
 
-        return songService.getSongById(id);
+        List<SongResponse> songs = songService.getSongsByArtist(artistId);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Songs fetched successfully", songs)
+        );
     }
 
-    @GetMapping("/albums/{id}")
-    public AlbumDetailsDTO getAlbumById(@PathVariable Long id) {
-        log.info("Incoming request to fetch album with ID: {}", id);
-        return songService.getAlbumById(id);
+
+    // Add Song to Album
+    @PutMapping("/{songId}/album/{albumId}")
+    public ResponseEntity<ApiResponse<SongResponse>> addSongToAlbum(
+            @PathVariable Long artistId,
+            @PathVariable Long songId,
+            @PathVariable Long albumId) {
+
+        SongResponse response = songService.addSongToAlbum(artistId, songId, albumId);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Song added to album", response)
+        );
     }
 
-    @GetMapping("/search")
-    public Map<String, Object> search(@RequestParam String keyword) {
+    @PutMapping("/{songId}")
+    public ResponseEntity<ApiResponse<SongResponse>> updateSong(
+            @PathVariable Long artistId,
+            @PathVariable Long songId,
+            @RequestBody SongUpdateRequest request) {
 
-        log.info("Incoming search request with keyword: {}", keyword);
+        SongResponse response =
+                songService.updateSong(artistId, songId, request);
 
-        return songService.globalSearch(keyword);
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Song updated successfully", response)
+        );
+    }
+
+
+    // Remove Song from Album
+    @PutMapping("/{songId}/remove-album")
+    public ResponseEntity<ApiResponse<SongResponse>> removeSongFromAlbum(
+            @PathVariable Long artistId,
+            @PathVariable Long songId) {
+
+        SongResponse response = songService.removeSongFromAlbum(artistId, songId);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Song removed from album", response)
+        );
+    }
+
+    // Update Visibility
+    @PutMapping("/{songId}/visibility")
+    public ResponseEntity<ApiResponse<SongResponse>> updateVisibility(
+            @PathVariable Long artistId,
+            @PathVariable Long songId,
+            @RequestParam Visibility visibility) {
+
+        SongResponse response =
+                songService.updateVisibility(artistId, songId, visibility);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Visibility updated successfully", response)
+        );
+    }
+
+    // Delete Song
+    @DeleteMapping("/{songId}")
+    public ResponseEntity<ApiResponse<Void>> deleteSong(
+            @PathVariable Long artistId,
+            @PathVariable Long songId) {
+
+        songService.deleteSong(artistId, songId);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Song deleted successfully", null)
+        );
     }
 }

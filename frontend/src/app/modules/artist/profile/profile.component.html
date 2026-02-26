@@ -1,0 +1,81 @@
+<h2>Artist Profile</h2>
+
+<div *ngIf="!profileData">
+  <h3>No profile found.</h3>
+  <p>Please complete your artist registration.</p>
+</div>
+
+<div *ngIf="profileData">
+
+  <!-- ================= VIEW MODE ================= -->
+  <div *ngIf="!isEditMode">
+
+    <p><strong>Name:</strong> {{ profileData.artistName }}</p>
+    <p><strong>Bio:</strong> {{ profileData.bio }}</p>
+    <p><strong>Genre:</strong> {{ profileData.genre }}</p>
+
+    <h3>Social Links</h3>
+    <p><strong>Instagram:</strong> {{ profileData.instagramLink }}</p>
+    <p><strong>Twitter:</strong> {{ profileData.twitterLink }}</p>
+    <p><strong>YouTube:</strong> {{ profileData.youtubeLink }}</p>
+    <p><strong>Website:</strong> {{ profileData.websiteLink }}</p>
+
+    <button (click)="enableEdit()">Edit Profile</button>
+    <button (click)="logout()">Logout</button>
+
+  </div>
+
+  <!-- ================= EDIT MODE ================= -->
+  <div *ngIf="isEditMode">
+
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+
+      <div>
+        <label>Artist Name:</label>
+        <input type="text" formControlName="artistName">
+      </div>
+
+      <div>
+        <label>Bio:</label>
+        <textarea formControlName="bio"></textarea>
+      </div>
+
+      <div>
+        <label>Genre:</label>
+        <input type="text" formControlName="genre">
+      </div>
+
+      <h3>Social Links</h3>
+
+      <div>
+        <label>Instagram:</label>
+        <input type="text" formControlName="instagramLink">
+      </div>
+
+      <div>
+        <label>Twitter:</label>
+        <input type="text" formControlName="twitterLink">
+      </div>
+
+      <div>
+        <label>YouTube:</label>
+        <input type="text" formControlName="youtubeLink">
+      </div>
+
+      <div>
+        <label>Website:</label>
+        <input type="text" formControlName="websiteLink">
+      </div>
+
+      <button type="submit">Update</button>
+      <button type="button" (click)="cancelEdit()">Cancel</button>
+      <button type="button" (click)="logout()">Logout</button>
+
+    </form>
+
+  </div>
+
+</div>
+
+<hr>
+<a routerLink="/artist">Back to Dashboard</a>

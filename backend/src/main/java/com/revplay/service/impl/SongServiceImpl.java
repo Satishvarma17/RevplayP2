@@ -1,24 +1,22 @@
 package com.revplay.service.impl;
 
-import com.revplay.dto.AlbumDetailsDTO;
-import com.revplay.dto.SongDTO;
-import com.revplay.entity.Album;
-import com.revplay.entity.Song;
-import com.revplay.exception.ResourceNotFoundException;
+import com.revplay.dto.request.SongUpdateRequest;
+import com.revplay.dto.request.SongUploadRequest;
+import com.revplay.dto.response.SongResponse;
+import com.revplay.entity.*;
 import com.revplay.repository.AlbumRepository;
 import com.revplay.repository.ArtistRepository;
 import com.revplay.repository.SongRepository;
 import com.revplay.service.SongService;
-
+import com.revplay.util.FileUploadUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import com.revplay.entity.Visibility;
 
-import java.util.*;
+import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SongServiceImpl implements SongService {
@@ -26,139 +24,153 @@ public class SongServiceImpl implements SongService {
     private final SongRepository songRepository;
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
+    private final FileUploadUtil fileUploadUtil;
+
+    // ================= UPLOAD SONG =================
 
     @Override
-    public Page<SongDTO> getAllSongs(int page,
-                                     int size,
-                                     String title,
-                                     String genre,
-                                     String album,
-                                     Integer releaseYear,
-                                     String sort) {
+    public SongResponse uploadSong(Long artistId,
+                                   SongUploadRequest request,
+                                   MultipartFile file) {
 
-        log.info("Fetching songs - page: {}, size: {}, title: {}, genre: {}, album: {}, releaseYear: {}, sort: {}",
-                page, size, title, genre, album, releaseYear, sort);
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new EntityNotFoundException("Artist not found"));
 
-        String[] sortParts = sort.split(",");
-        String sortBy = sortParts.length > 0 ? sortParts[0] : "title";
-        String direction = sortParts.length > 1 ? sortParts[1] : "asc";
+        // Upload file
+        String filePath = fileUploadUtil.uploadFile(file, "songs");
 
-        Sort order = direction.equalsIgnoreCase("desc")
-                ? Sort.by(sortBy).descending()
-                : Sort.by(sortBy).ascending();
+        Song song = Song.builder()
+                .title(request.getTitle())
+                .genre(request.getGenre())
+                .duration(request.getDuration())
+                .audioFileUrl(filePath)
+                .visibility(request.getVisibility())   // ✅ Correct
+                .artist(artist)
+                .build();
 
-        Pageable pageable = PageRequest.of(page, size, order);
+        songRepository.save(song);
 
-        Page<Song> songs = songRepository.findSongsWithFilters(
-                isBlank(title) ? null : title,
-                isBlank(genre) ? null : genre,
-                isBlank(album) ? null : album,
-                releaseYear,
-                pageable
-        );
-
-        log.info("Total songs found: {}", songs.getTotalElements());
-
-        return songs.map(this::convertToDTO);
+        return mapToResponse(song);
     }
 
-    @Override
-    public SongDTO getSongById(Long id) {
-
-        log.info("Fetching song with ID: {}", id);
-
-        Song song = songRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Song not found with ID: {}", id);
-                    return new ResourceNotFoundException("Song not found with id: " + id);
-                });
-
-        return convertToDTO(song);
-    }
 
     @Override
-    public AlbumDetailsDTO getAlbumById(Long id) {
+    public List<SongResponse> getSongsByArtist(Long artistId) {
 
-        log.info("Fetching album with ID: {}", id);
+        List<Song> songs = songRepository.findByArtistId(artistId);
 
-        Album album = albumRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Album not found with ID: {}", id);
-                    return new ResourceNotFoundException("Album not found with id: " + id);
-                });
-
-        List<SongDTO> songs = album.getSongs().stream()
-                .map(this::convertToDTO)
+        return songs.stream()
+                .map(this::mapToResponse)
                 .toList();
-
-        return new AlbumDetailsDTO(
-                album.getId(),
-                album.getName(),
-                album.getReleaseDate(),
-                album.getArtist() != null ? album.getArtist().getName() : null,
-                songs
-        );
     }
 
     @Override
-    public Map<String, Object> globalSearch(String keyword) {
-
-        log.info("Performing global search for keyword: {}", keyword);
-
-        Map<String, Object> result = new HashMap<>();
-
-        List<SongDTO> songResults = songRepository.advancedSearch(keyword)
+    public List<SongResponse> getPublicSongs() {
+        return songRepository.findByVisibility(Visibility.PUBLIC)
                 .stream()
-                .map(this::convertToDTO)
+                .map(this::mapToResponse)
                 .toList();
-
-        List<Map<String, Object>> artistResults = artistRepository.advancedSearch(keyword)
-                .stream()
-                .map(artist -> {
-                    Map<String, Object> dto = new HashMap<>();
-                    dto.put("id", artist.getId());
-                    dto.put("name", artist.getName());
-                    dto.put("genre", artist.getGenre());
-                    return dto;
-                })
-                .toList();
-
-        List<Map<String, Object>> albumResults = albumRepository.advancedSearch(keyword)
-                .stream()
-                .map(album -> {
-                    Map<String, Object> dto = new HashMap<>();
-                    dto.put("id", album.getId());
-                    dto.put("name", album.getName());
-                    dto.put("releaseDate", album.getReleaseDate());
-                    return dto;
-                })
-                .toList();
-
-        result.put("songs", songResults);
-        result.put("artists", artistResults);
-        result.put("albums", albumResults);
-
-        log.info("Search completed. Songs found: {}", songResults.size());
-
-        return result;
     }
 
-    private boolean isBlank(String value) {
-        return value == null || value.trim().isEmpty();
+
+    @Override
+    public SongResponse updateSong(Long artistId, Long songId, SongUpdateRequest request) {
+
+        Song song = getArtistOwnedSong(artistId, songId);
+
+        song.setTitle(request.getTitle());
+        song.setGenre(request.getGenre());
+        song.setDuration(request.getDuration());
+        song.setVisibility(request.getVisibility());
+
+        songRepository.save(song);
+
+        return mapToResponse(song);
     }
 
-    private SongDTO convertToDTO(Song song) {
 
-        return new SongDTO(
-                song.getId(),
-                song.getTitle(),
-                song.getGenre(),
-                song.getDuration(),
-                song.getReleaseDate(),
-                song.getArtist() != null ? song.getArtist().getId() : null,
-                song.getArtist() != null ? song.getArtist().getName() : null,
-                song.getAlbum() != null ? song.getAlbum().getId() : null,
-                song.getAlbum() != null ? song.getAlbum().getName() : null
-        );
+    // ================= ADD SONG TO ALBUM =================
+
+    @Override
+    public SongResponse addSongToAlbum(Long artistId, Long songId, Long albumId) {
+
+        Song song = getArtistOwnedSong(artistId, songId);
+
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new EntityNotFoundException("Album not found"));
+
+        if (!album.getArtist().getId().equals(artistId)) {
+            throw new RuntimeException("You cannot add song to another artist's album");
+        }
+
+        song.setAlbum(album);
+        songRepository.save(song);
+
+        return mapToResponse(song);
+    }
+
+    // ================= REMOVE SONG FROM ALBUM =================
+
+    @Override
+    public SongResponse removeSongFromAlbum(Long artistId, Long songId) {
+
+        Song song = getArtistOwnedSong(artistId, songId);
+
+        song.setAlbum(null);
+        songRepository.save(song);
+
+        return mapToResponse(song);
+    }
+
+    // ================= UPDATE VISIBILITY =================
+
+    @Override
+    public SongResponse updateVisibility(Long artistId, Long songId, Visibility visibility) {
+
+        Song song = getArtistOwnedSong(artistId, songId);
+
+        song.setVisibility(visibility);
+        songRepository.save(song);
+
+        return mapToResponse(song);
+    }
+
+    // ================= DELETE SONG =================
+
+    @Override
+    public void deleteSong(Long artistId, Long songId) {
+
+        Song song = getArtistOwnedSong(artistId, songId);
+
+        songRepository.delete(song);
+    }
+
+    // ================= HELPER =================
+
+    private Song getArtistOwnedSong(Long artistId, Long songId) {
+
+        Song song = songRepository.findById(songId)
+                .orElseThrow(() -> new EntityNotFoundException("Song not found"));
+
+        if (!song.getArtist().getId().equals(artistId)) {
+            throw new RuntimeException("You are not allowed to modify this song");
+        }
+
+        return song;
+    }
+
+    private SongResponse mapToResponse(Song song) {
+
+        return SongResponse.builder()
+                .id(song.getId())
+                .title(song.getTitle())
+                .genre(song.getGenre())
+                .duration(song.getDuration())
+                .visibility(song.getVisibility())   // Enum directly
+                .artistName(song.getArtist().getArtistName())
+                .albumName(song.getAlbum() != null ? song.getAlbum().getName() : null)
+                .albumId(song.getAlbum() != null ? song.getAlbum().getId() : null)
+                .createdAt(song.getCreatedAt())
+                .build();
     }
 }

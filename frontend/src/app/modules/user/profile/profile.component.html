@@ -1,0 +1,27 @@
+<div class="card">
+
+  <h2>My Profile</h2>
+
+  <label>Username</label>
+  <input [(ngModel)]="editableUser.username" [disabled]="!isEditMode || isSaving" />
+
+  <label>Email</label>
+  <input [(ngModel)]="editableUser.email" [disabled]="!isEditMode || isSaving" />
+
+  <label>Display Name</label>
+  <input [(ngModel)]="editableUser.displayName" [disabled]="!isEditMode || isSaving" />
+
+  <label>Bio</label>
+  <textarea [(ngModel)]="editableUser.bio" [disabled]="!isEditMode || isSaving"></textarea>
+
+  <button (click)="toggleProfileEdit()" [disabled]="isSaving">{{ isEditMode ? 'Save' : 'Update' }}</button>
+  <button (click)="logout()">Logout</button>
+
+  <hr>
+
+  <h3>Statistics</h3>
+  <p>Total Playlists: {{ stats.totalPlaylists }}</p>
+  <p>Total Favorites: {{ stats.totalFavorites }}</p>
+  <p>Total Listening Minutes: {{ stats.totalListeningMinutes }}</p>
+
+</div>
