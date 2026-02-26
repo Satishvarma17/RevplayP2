@@ -17,6 +17,6 @@ export const roleGuard: CanActivateFn = (route) => {
     return true;
   }
 
-  router.navigate(['/home/login']);
+  router.navigate([authService.getDefaultRouteForCurrentRole()]);
   return false;
 };

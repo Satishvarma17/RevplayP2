@@ -41,4 +41,11 @@ public class User {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    private String displayName;
+
+    @Column(length = 500)
+    private String bio;
+
+    private String profileImage;
 }

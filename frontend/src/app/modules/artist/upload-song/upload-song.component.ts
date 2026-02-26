@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SongService } from 'src/app/services/song.service';
+import { SongService } from 'src/app/core/services/song.service';
 
 @Component({
   selector: 'app-upload-song',

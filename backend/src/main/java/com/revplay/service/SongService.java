@@ -16,6 +16,8 @@ public interface SongService {
 
     List<SongResponse> getSongsByArtist(Long artistId);
 
+    List<SongResponse> getPublicSongs();
+
     SongResponse updateSong(Long artistId, Long songId, SongUpdateRequest request);
 
     SongResponse removeSongFromAlbum(Long artistId, Long songId);

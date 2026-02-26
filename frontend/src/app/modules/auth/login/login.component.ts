@@ -46,7 +46,7 @@ export class LoginComponent {
       next: (response) => {
         const token = response?.data?.token;
         if (token) {
-          this.authService.saveToken(token);
+          this.authService.saveSession(token, response?.data?.username);
           this.successMessage = 'Login successful';
 
           const tokenRole = this.authService.getUserRole();
@@ -55,10 +55,10 @@ export class LoginComponent {
             if (artistId) {
               this.authService.saveArtistId(artistId);
             }
-            this.router.navigate(['/artist/dashboard']);
+            this.router.navigate([this.authService.getDefaultRouteForCurrentRole()]);
           } else {
             localStorage.removeItem('artistId');
-            this.router.navigate(['/user/dashboard']);
+            this.router.navigate([this.authService.getDefaultRouteForCurrentRole()]);
           }
         } else {
           this.errorMessage = 'Token not found in response';

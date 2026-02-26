@@ -1,0 +1,58 @@
+.browse-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.song-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.song-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.song-artist {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.favorite-toggle {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite-toggle svg {
+  width: 24px;
+  height: 24px;
+  fill: transparent;
+  stroke: #9ca3af;
+  stroke-width: 1.8;
+  transition: fill 120ms ease, stroke 120ms ease;
+}
+
+.favorite-toggle.favorite-on {
+  color: #dc2626;
+}
+
+.favorite-toggle.favorite-on svg {
+  fill: #dc2626;
+  stroke: #dc2626;
+}
+
+.favorite-toggle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
