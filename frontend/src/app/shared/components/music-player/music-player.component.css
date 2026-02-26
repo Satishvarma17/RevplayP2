@@ -1,0 +1,142 @@
+.player {
+  max-width: 860px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid #dfe7f5;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 12px 30px rgba(28, 56, 96, 0.08);
+}
+
+.now-playing {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1b4f72;
+  background: #d8ecff;
+  border-radius: 999px;
+  padding: 4px 10px;
+  margin-bottom: 8px;
+}
+
+.now-playing h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.now-playing p {
+  margin: 8px 0 0;
+  color: #243d63;
+  font-weight: 600;
+}
+
+.history-link {
+  text-decoration: none;
+  color: #1f4e9c;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.player-warning {
+  margin: 0 0 12px;
+  color: #8a2c20;
+  background: #ffece8;
+  border: 1px solid #f4c7bf;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.controls button,
+.queue button {
+  border: 1px solid #b7c7e5;
+  background: #ecf3ff;
+  border-radius: 8px;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.controls button:hover,
+.queue button:hover {
+  background: #dfeaff;
+}
+
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.progress-row {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-row input {
+  width: 100%;
+}
+
+.volume-row {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.queue {
+  margin-top: 18px;
+}
+
+.queue h3 {
+  margin: 0 0 8px;
+}
+
+.queue ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.queue li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid #edf1f9;
+  padding: 10px 0;
+}
+
+.queue li.active span {
+  font-weight: 700;
+  color: #183564;
+}
+
+@media (max-width: 720px) {
+  .player {
+    padding: 16px;
+  }
+
+  .now-playing {
+    flex-direction: column;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+  }
+}

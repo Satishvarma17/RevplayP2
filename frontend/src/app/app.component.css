@@ -1,0 +1,33 @@
+.app-shell {
+  min-height: 100vh;
+  background: radial-gradient(circle at top right, #ecf3ff 0%, #f5f7fb 42%, #eef2f8 100%);
+}
+
+.top-nav {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #d8dce7;
+  background: #ffffff;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: #1b2a4a;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.top-nav a:hover {
+  background: #edf2ff;
+}
+
+.top-nav a.active {
+  background: #dbe8ff;
+}
+
+.page-content {
+  padding: 20px 12px;
+}
