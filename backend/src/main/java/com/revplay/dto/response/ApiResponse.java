@@ -1,30 +1,32 @@
 package com.revplay.dto.response;
 
-public class ApiResponse {
-    private Boolean success;
+import lombok.*;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ApiResponse<T> {
+
+    private boolean success;
     private String message;
+    private T data;
+    private LocalDateTime timestamp;
 
-    public ApiResponse() {
-    }
-
-    public ApiResponse(Boolean success, String message) {
+    public ApiResponse(boolean success, String message, T data) {
         this.success = success;
         this.message = message;
+        this.data = data;
+        this.timestamp = LocalDateTime.now();
     }
 
-    public Boolean getSuccess() {
-        return success;
+    public static <T> ApiResponse<T> success(String message, T data) {
+        return new ApiResponse<>(true, message, data);
     }
 
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public static <T> ApiResponse<T> failure(String message) {
+        return new ApiResponse<>(false, message, null);
     }
 }

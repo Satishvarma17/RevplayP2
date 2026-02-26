@@ -1,40 +1,28 @@
 package com.revplay.dto.response;
+import com.revplay.entity.Visibility;
 
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SongResponse {
+
     private Long id;
     private String title;
-    private String url;
+    private String genre;
+    private Integer duration;
+    private String audioFileUrl;
 
-    public SongResponse() {
-    }
+    private Visibility visibility;
 
-    public SongResponse(Long id, String title, String url) {
-        this.id = id;
-        this.title = title;
-        this.url = url;
-    }
+    private String artistName;
+    private String albumName;
+    private Long albumId;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
+    private LocalDateTime createdAt;
 }

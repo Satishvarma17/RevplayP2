@@ -1,57 +1,58 @@
 package com.revplay.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "songs")
+@Table(name = "SONG")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Song {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "song_seq_gen")
+    @SequenceGenerator(
+            name = "song_seq_gen",
+            sequenceName = "SONG_SEQ",
+            allocationSize = 1
+    )
+    @Column(name = "SONG_ID")
     private Long id;
 
+    @Column(name = "TITLE", nullable = false, length = 150)
     private String title;
-    private String filename;
-    private String url;
 
-    public Song() {
-    }
+    @Column(name = "GENRE", length = 100)
+    private String genre;
 
-    public Song(Long id, String title, String filename, String url) {
-        this.id = id;
-        this.title = title;
-        this.filename = filename;
-        this.url = url;
-    }
+    @Column(name = "DURATION", nullable = false)
+    private Integer duration;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "AUDIO_FILE_URL", nullable = false)
+    private String audioFileUrl;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "VISIBILITY", nullable = false)
+    private Visibility visibility;
 
-    public String getTitle() {
-        return title;
-    }
+    @Column(name = "CREATED_AT", updatable = false)
+    private LocalDateTime createdAt;
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ARTIST_ID", nullable = false)
+    private Artist artist;
 
-    public String getFilename() {
-        return filename;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ALBUM_ID")
+    private Album album;
 
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 }

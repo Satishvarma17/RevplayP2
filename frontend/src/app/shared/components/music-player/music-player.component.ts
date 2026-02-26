@@ -19,6 +19,7 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
 
   private readonly audio = new Audio();
   private hasRecordedCurrentSong = false;
+  private isRecordingCurrentSong = false;
 
   private readonly onTimeUpdate = (): void => {
     this.currentTime = this.audio.currentTime;
@@ -168,11 +169,11 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
   }
 
   private startPlayback(): void {
+    this.recordPlayIfNeeded();
     this.audio
       .play()
       .then(() => {
         this.isPlaying = true;
-        this.recordPlayIfNeeded();
       })
       .catch(() => {
         this.isPlaying = false;
@@ -180,17 +181,18 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
   }
 
   private recordPlayIfNeeded(): void {
-    if (this.hasRecordedCurrentSong || !this.currentSong) {
+    if (this.hasRecordedCurrentSong || this.isRecordingCurrentSong || !this.currentSong) {
       return;
     }
 
+    this.isRecordingCurrentSong = true;
     this.listeningHistoryService.recordPlay(this.currentSong.id).subscribe({
       next: () => {
         this.hasRecordedCurrentSong = true;
+        this.isRecordingCurrentSong = false;
       },
       error: () => {
-        // Avoid spamming retries on the same song when backend is unavailable.
-        this.hasRecordedCurrentSong = true;
+        this.isRecordingCurrentSong = false;
         this.loadError = 'Play history is unavailable until you log in.';
       }
     });

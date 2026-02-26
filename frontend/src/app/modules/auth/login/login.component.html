@@ -1,0 +1,41 @@
+<h2>Login</h2>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="identifier">Username or Email</label>
+    <input id="identifier" type="text" formControlName="identifier" />
+    <small
+      *ngIf="
+        loginForm.get('identifier')?.invalid &&
+        loginForm.get('identifier')?.touched
+      "
+    >
+      Username or email is required
+    </small>
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input id="password" type="password" formControlName="password" />
+    <small
+      *ngIf="
+        loginForm.get('password')?.invalid &&
+        loginForm.get('password')?.touched
+      "
+    >
+      Password is required
+    </small>
+  </div>
+
+  <button type="submit" [disabled]="loading">
+    {{ loading ? 'Logging in...' : 'Login' }}
+  </button>
+</form>
+
+<p *ngIf="successMessage">{{ successMessage }}</p>
+<p *ngIf="errorMessage">{{ errorMessage }}</p>
+
+<p class="auth-switch">
+  Not registered yet?
+  <a class="auth-link" [routerLink]="['/home/register']">Sign up</a>
+</p>

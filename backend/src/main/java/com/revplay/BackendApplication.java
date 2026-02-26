@@ -13,5 +13,4 @@ public class BackendApplication {
 		SpringApplication.run(BackendApplication.class, args);
 		log.info("RevPlay backend started successfully");
 	}
-
 }

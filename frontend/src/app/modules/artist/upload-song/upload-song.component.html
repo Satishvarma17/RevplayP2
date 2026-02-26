@@ -1,0 +1,38 @@
+<h2>Upload Song</h2>
+
+<form [formGroup]="uploadForm" (ngSubmit)="uploadSong()">
+
+  <div>
+    <label>Title:</label>
+    <input type="text" formControlName="title">
+  </div>
+
+  <div>
+    <label>Genre:</label>
+    <input type="text" formControlName="genre">
+  </div>
+
+  <div>
+    <label>Duration (seconds):</label>
+    <input type="number" formControlName="duration">
+  </div>
+
+  <div>
+    <label>Visibility:</label>
+    <select formControlName="visibility">
+      <option value="PUBLIC">Public</option>
+      <option value="UNLISTED">Unlisted</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Audio File:</label>
+    <input type="file" (change)="onFileChange($event)">
+  </div>
+
+  <button type="submit">Upload</button>
+
+</form>
+
+<hr>
+<a routerLink="/artist">Back to Dashboard</a>

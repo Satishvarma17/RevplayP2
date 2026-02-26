@@ -31,9 +31,9 @@ public class ListeningHistoryController {
     }
 
     @DeleteMapping
-    public ApiResponse clearHistory(@RequestParam Long userId) {
+    public ApiResponse<Void> clearHistory(@RequestParam Long userId) {
         log.info("Clear history request. userId={}", userId);
         long removed = listeningHistoryService.clearHistory(userId);
-        return new ApiResponse(true, "Removed " + removed + " history record(s)");
+        return new ApiResponse<>(true, "Removed " + removed + " history record(s)", null);
     }
 }

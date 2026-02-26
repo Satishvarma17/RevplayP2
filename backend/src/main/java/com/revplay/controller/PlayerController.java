@@ -21,9 +21,9 @@ public class PlayerController {
     }
 
     @PostMapping("/play")
-    public ApiResponse playSong(@Valid @RequestBody PlaySongRequest request) {
+    public ApiResponse<Void> playSong(@Valid @RequestBody PlaySongRequest request) {
         log.info("Play event received. userId={}, songId={}", request.getUserId(), request.getSongId());
         listeningHistoryService.recordPlay(request.getUserId(), request.getSongId());
-        return new ApiResponse(true, "Play event recorded successfully");
+        return new ApiResponse<>(true, "Play event recorded successfully", null);
     }
 }

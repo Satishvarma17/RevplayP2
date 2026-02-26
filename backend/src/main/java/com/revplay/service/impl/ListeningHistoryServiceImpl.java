@@ -81,7 +81,7 @@ public class ListeningHistoryServiceImpl implements ListeningHistoryService {
                 history.getUserId(),
                 history.getSong().getId(),
                 history.getSong().getTitle(),
-                history.getSong().getUrl(),
+                history.getSong().getAudioFileUrl(),
                 history.getPlayedAt().toString()
         );
     }
