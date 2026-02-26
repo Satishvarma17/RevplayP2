@@ -1,5 +1,9 @@
 <h2>Browse Songs</h2>
 
+<div *ngIf="songs.length === 0" class="card">
+  <p>No songs available.</p>
+</div>
+
 <div *ngFor="let song of songs" class="card browse-row">
   <div class="song-main">
     <p class="song-title">{{ song.title }}</p>

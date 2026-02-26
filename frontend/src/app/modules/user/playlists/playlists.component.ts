@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SONG_CATALOG } from 'src/app/core/data/song-catalog';
 import { Playlist, PlaylistService } from 'src/app/core/services/playlist.service';
+import { LibrarySong, SongLibraryService } from 'src/app/core/services/song-library.service';
 
 @Component({
   selector: 'app-playlists',
@@ -9,17 +9,27 @@ import { Playlist, PlaylistService } from 'src/app/core/services/playlist.servic
 })
 export class PlaylistsComponent implements OnInit {
 
-  availableSongs = SONG_CATALOG;
+  availableSongs: LibrarySong[] = [];
   playlists: Playlist[] = [];
   newPlaylist = { name: '', description: '' };
   editDrafts: Record<number, { name: string; description: string }> = {};
   songInput: Record<number, number | null> = {};
   processingPlaylistIds = new Set<number>();
 
-  constructor(private playlistService: PlaylistService) {}
+  constructor(
+    private playlistService: PlaylistService,
+    private songLibraryService: SongLibraryService
+  ) {}
 
   ngOnInit(): void {
-    this.load();
+    this.loadSongs();
+  }
+
+  loadSongs(): void {
+    this.songLibraryService.getPublicSongs().subscribe((songs) => {
+      this.availableSongs = songs;
+      this.load();
+    });
   }
 
   load(): void {

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ArtistService } from 'src/app/services/artist.service';
+import { ArtistService } from 'src/app/core/services/artist.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-artist-register',
-  templateUrl: './register.component.html'
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
 

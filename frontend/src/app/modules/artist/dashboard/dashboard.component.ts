@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
-import { SongService } from 'src/app/services/song.service';
-import { AlbumService } from 'src/app/services/album.service';
+import { SongService } from 'src/app/core/services/song.service';
+import { AlbumService } from 'src/app/core/services/album.service';
 
 @Component({
   selector: 'app-artist-dashboard',

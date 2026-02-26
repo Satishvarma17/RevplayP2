@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8083/api/auth';
+  private baseUrl = 'http://localhost:8080/api/auth';
 
   constructor(private http: HttpClient) {}
 
@@ -31,6 +31,15 @@ export class AuthService {
     this.saveSession(token);
   }
 
+  saveArtistId(artistId: number | string): void {
+    const normalized = String(artistId ?? '').trim();
+    if (!normalized) {
+      localStorage.removeItem('artistId');
+      return;
+    }
+    localStorage.setItem('artistId', normalized);
+  }
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
@@ -43,7 +52,26 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    if (!token) {
+      return false;
+    }
+
+    const payload = this.getJwtPayload();
+    if (!payload) {
+      this.logout();
+      return false;
+    }
+
+    if (typeof payload.exp === 'number') {
+      const nowInSeconds = Math.floor(Date.now() / 1000);
+      if (payload.exp <= nowInSeconds) {
+        this.logout();
+        return false;
+      }
+    }
+
+    return true;
   }
 
   getUserRole(): string | null {
@@ -53,6 +81,11 @@ export class AuthService {
 
   hasRole(expectedRole: string): boolean {
     return this.getUserRole() === expectedRole;
+  }
+
+  getDefaultRouteForCurrentRole(): string {
+    const role = this.getUserRole();
+    return role === 'ARTIST' ? '/artist/dashboard' : '/browse';
   }
 
   getCurrentUsername(): string {

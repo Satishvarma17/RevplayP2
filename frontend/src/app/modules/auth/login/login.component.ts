@@ -55,10 +55,10 @@ export class LoginComponent {
             if (artistId) {
               this.authService.saveArtistId(artistId);
             }
-            this.router.navigate(['/artist/dashboard']);
+            this.router.navigate([this.authService.getDefaultRouteForCurrentRole()]);
           } else {
             localStorage.removeItem('artistId');
-            this.router.navigate(['/browse']);
+            this.router.navigate([this.authService.getDefaultRouteForCurrentRole()]);
           }
         } else {
           this.errorMessage = 'Token not found in response';

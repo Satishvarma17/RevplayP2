@@ -64,6 +64,14 @@ public class SongServiceImpl implements SongService {
                 .toList();
     }
 
+    @Override
+    public List<SongResponse> getPublicSongs() {
+        return songRepository.findByVisibility(Visibility.PUBLIC)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
 
     @Override
     public SongResponse updateSong(Long artistId, Long songId, SongUpdateRequest request) {

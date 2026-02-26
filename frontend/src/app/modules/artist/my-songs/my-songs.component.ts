@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SongService } from 'src/app/services/song.service';
+import { SongService } from 'src/app/core/services/song.service';
 
 @Component({
   selector: 'app-my-songs',

@@ -1,11 +1,18 @@
 <div class="app-shell">
-  <header class="top-nav" *ngIf="authService.isLoggedIn()">
+  <header class="top-nav" *ngIf="authService.isLoggedIn() && !router.url.startsWith('/home')">
     <div class="brand">RevPlay</div>
-    <nav class="nav-links">
+    <nav class="nav-links" *ngIf="authService.getUserRole() === 'USER'">
       <a routerLink="/browse" routerLinkActive="active">Browse</a>
       <a routerLink="/favorites" routerLinkActive="active">Favorites</a>
       <a routerLink="/playlists" routerLinkActive="active">Playlists</a>
       <a routerLink="/profile" routerLinkActive="active">Profile</a>
+    </nav>
+    <nav class="nav-links" *ngIf="authService.getUserRole() === 'ARTIST'">
+      <a routerLink="/artist/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/artist/upload-song" routerLinkActive="active">Upload Song</a>
+      <a routerLink="/artist/my-songs" routerLinkActive="active">My Songs</a>
+      <a routerLink="/artist/manage-albums" routerLinkActive="active">Albums</a>
+      <a routerLink="/artist/profile" routerLinkActive="active">Profile</a>
     </nav>
   </header>
 

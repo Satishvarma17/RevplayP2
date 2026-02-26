@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { getSongById } from 'src/app/core/data/song-catalog';
 import { FavoriteService } from 'src/app/core/services/favorite.service';
+import { SongLibraryService } from 'src/app/core/services/song-library.service';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -14,6 +14,7 @@ export class FavoritesComponent implements OnInit {
 
   constructor(
     private favoriteService: FavoriteService,
+    private songLibraryService: SongLibraryService,
     private userService: UserService
   ) {}
 
@@ -22,18 +23,12 @@ export class FavoritesComponent implements OnInit {
   }
 
   loadFavorites() {
-    this.favoriteService.get().subscribe(songIds => {
-      this.favorites = songIds.map((songId) => {
-        const song = getSongById(songId);
-        if (song) {
-          return song;
-        }
-
-        return {
-          id: songId,
-          title: `Unknown Song (${songId})`,
-          artist: 'Unknown Artist'
-        };
+    this.songLibraryService.getPublicSongs().subscribe((songs) => {
+      const songMap = new Map(songs.map((song) => [song.id, song]));
+      this.favoriteService.get().subscribe((songIds) => {
+        this.favorites = songIds
+          .map((songId) => songMap.get(songId))
+          .filter((song): song is { id: number; title: string; artist: string } => !!song);
       });
     });
   }

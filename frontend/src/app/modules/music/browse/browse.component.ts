@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SONG_CATALOG, Song } from 'src/app/core/data/song-catalog';
 import { FavoriteService } from 'src/app/core/services/favorite.service';
+import { LibrarySong, SongLibraryService } from 'src/app/core/services/song-library.service';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -10,19 +10,24 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class BrowseComponent implements OnInit {
 
-  songs: Array<Song & { isFavorite: boolean }> = SONG_CATALOG.map(song => ({
-    ...song,
-    isFavorite: false
-  }));
+  songs: Array<LibrarySong & { isFavorite: boolean }> = [];
   processingSongIds = new Set<number>();
 
   constructor(
+    private songLibraryService: SongLibraryService,
     private favoriteService: FavoriteService,
     private userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this.loadFavorites();
+    this.loadSongs();
+  }
+
+  loadSongs(): void {
+    this.songLibraryService.getPublicSongs().subscribe((songs) => {
+      this.songs = songs.map((song) => ({ ...song, isFavorite: false }));
+      this.loadFavorites();
+    });
   }
 
   loadFavorites(): void {
@@ -41,7 +46,7 @@ export class BrowseComponent implements OnInit {
     );
   }
 
-  toggleFavorite(song: Song & { isFavorite: boolean }): void {
+  toggleFavorite(song: LibrarySong & { isFavorite: boolean }): void {
     const songId = song.id;
     if (this.processingSongIds.has(songId)) {
       return;
