@@ -1,0 +1,70 @@
+<div class="dashboard">
+
+  <!-- Overview Cards -->
+  <div class="cards">
+    <div class="card">
+      <h3>Total Songs</h3>
+      <h2>{{overview?.totalSongs}}</h2>
+    </div>
+
+    <div class="card">
+      <h3>Total Plays</h3>
+      <h2>{{overview?.totalPlays}}</h2>
+    </div>
+
+    <div class="card">
+      <h3>Total Favorites</h3>
+      <h2>{{overview?.totalFavorites}}</h2>
+    </div>
+  </div>
+
+  <!-- Song Performance -->
+  <div class="section">
+    <h2>Song Performance</h2>
+    <table>
+      <tr>
+        <th>Song</th>
+        <th>Plays</th>
+        <th>Favorites</th>
+      </tr>
+      <tr *ngFor="let song of songs">
+        <td>{{song.title}}</td>
+        <td>{{song.playCount}}</td>
+        <td>{{song.favoriteCount}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Top Songs -->
+  <div class="section">
+    <h2>Top Songs</h2>
+    <ol>
+      <li *ngFor="let song of topSongs">
+        {{song.title}} ({{song.playCount}})
+      </li>
+    </ol>
+  </div>
+
+  <!-- Listening Trends -->
+  <div class="section">
+    <h2>Listening Trends</h2>
+    <label for="trendType">View:</label>
+    <select id="trendType" [value]="trendType" (change)="onTrendTypeChange($any($event.target).value)">
+      <option value="daily">Daily</option>
+      <option value="weekly">Weekly</option>
+      <option value="monthly">Monthly</option>
+    </select>
+    <canvas id="trendChart"></canvas>
+  </div>
+
+  <!-- Top Listeners -->
+  <div class="section">
+    <h2>Top Listeners</h2>
+    <ol>
+      <li *ngFor="let listener of topListeners">
+        {{listener.listenerName}} ({{listener.listenCount}} listens)
+      </li>
+    </ol>
+  </div>
+
+</div>
