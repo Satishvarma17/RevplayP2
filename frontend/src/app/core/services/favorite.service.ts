@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class FavoriteService {
 
-  private baseUrl = 'http://localhost:8080/api/favorites';
+  private baseUrl = `${environment.apiUrl}/favorites`;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

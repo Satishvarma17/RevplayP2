@@ -17,6 +17,7 @@ public interface SongService {
     List<SongResponse> getSongsByArtist(Long artistId);
 
     List<SongResponse> getPublicSongs();
+    SongResponse getPublicSongById(Long songId);
 
     SongResponse updateSong(Long artistId, Long songId, SongUpdateRequest request);
 

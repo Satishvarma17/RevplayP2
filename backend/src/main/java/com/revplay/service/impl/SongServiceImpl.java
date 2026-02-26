@@ -72,6 +72,13 @@ public class SongServiceImpl implements SongService {
                 .toList();
     }
 
+    @Override
+    public SongResponse getPublicSongById(Long songId) {
+        Song song = songRepository.findByIdAndVisibility(songId, Visibility.PUBLIC)
+                .orElseThrow(() -> new EntityNotFoundException("Public song not found"));
+        return mapToResponse(song);
+    }
+
 
     @Override
     public SongResponse updateSong(Long artistId, Long songId, SongUpdateRequest request) {
