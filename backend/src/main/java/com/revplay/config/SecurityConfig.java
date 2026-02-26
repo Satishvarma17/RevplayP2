@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/songs/public").permitAll()
+                        .requestMatchers("/api/songs/public/**").permitAll()
                         .requestMatchers("/api/artist/**").hasRole("ARTIST")
                         .requestMatchers("/api/user/**").hasRole("USER")
                         .anyRequest().authenticated()

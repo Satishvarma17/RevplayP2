@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 export interface UserProfile {
   username: string;
@@ -30,7 +31,7 @@ export interface UserStats {
 })
 export class UserService {
 
-  private baseUrl = 'http://localhost:8080/api/users';
+  private baseUrl = `${environment.apiUrl}/users`;
   private statsChangedSubject = new Subject<void>();
 
   constructor(private http: HttpClient, private authService: AuthService) {}

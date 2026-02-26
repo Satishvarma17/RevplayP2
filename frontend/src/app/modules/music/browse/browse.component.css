@@ -5,6 +5,12 @@
   gap: 10px;
 }
 
+.song-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .song-main {
   display: flex;
   flex-direction: column;
@@ -22,6 +28,12 @@
   font-size: 13px;
 }
 
+.song-meta {
+  margin: 0;
+  color: #7f8ea3;
+  font-size: 12px;
+}
+
 .favorite-toggle {
   border: none;
   background: transparent;
@@ -32,6 +44,31 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.view-toggle {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-toggle svg {
+  width: 24px;
+  height: 24px;
+  fill: transparent;
+  stroke: #9ca3af;
+  stroke-width: 1.8;
+  transition: stroke 120ms ease;
+}
+
+.view-toggle:hover svg {
+  stroke: #dbeafe;
 }
 
 .favorite-toggle svg {
@@ -54,5 +91,27 @@
 
 .favorite-toggle:disabled {
   opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pagination {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.pagination button {
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(15, 23, 42, 0.85);
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.45;
   cursor: not-allowed;
 }

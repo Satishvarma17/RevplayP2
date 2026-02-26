@@ -5,6 +5,7 @@ import com.revplay.entity.Visibility;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SongRepository extends JpaRepository<Song, Long> {
 
@@ -13,6 +14,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     // Get songs by visibility (PUBLIC / UNLISTED)
     List<Song> findByVisibility(Visibility visibility);
+    Optional<Song> findByIdAndVisibility(Long id, Visibility visibility);
 
 
     // Get songs by artist and visibility
