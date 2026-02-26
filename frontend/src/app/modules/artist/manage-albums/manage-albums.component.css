@@ -1,0 +1,53 @@
+form div {
+  margin-bottom: 10px;
+}
+
+input, textarea {
+  width: 300px;
+  padding: 5px;
+}
+
+button {
+  margin-top: 5px;
+  padding: 5px 10px;
+}
+
+.album-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.album-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.album-actions button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.song-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.song-row button {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.song-row button:hover {
+  opacity: 0.8;
+}

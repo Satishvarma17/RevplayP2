@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/api/auth';
+  private baseUrl = 'http://localhost:8083/api/auth';
 
   constructor(private http: HttpClient) {}
 
@@ -39,6 +39,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('identifier');
+    localStorage.removeItem('artistId');
   }
 
   isLoggedIn(): boolean {

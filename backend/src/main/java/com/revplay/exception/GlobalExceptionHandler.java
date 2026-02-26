@@ -1,6 +1,7 @@
 package com.revplay.exception;
 
 import com.revplay.dto.response.ApiResponse;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,6 +39,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleNotFound(
             ResourceNotFoundException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleEntityNotFound(
+            EntityNotFoundException ex) {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)

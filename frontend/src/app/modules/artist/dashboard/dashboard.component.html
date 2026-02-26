@@ -1,3 +1,38 @@
-<h2>Artist Dashboard</h2>
-<p>Only ARTIST role should access this page.</p>
-<button (click)="logout()">Logout</button>
+<div class="dashboard-container">
+
+  <h2 class="dashboard-title">🎵 Artist Dashboard</h2>
+
+  <div class="dashboard-nav">
+    <a routerLink="/artist/profile">Profile</a>
+    <a routerLink="/artist/upload-song">Upload Song</a>
+    <a routerLink="/artist/my-songs">My Songs</a>
+    <a routerLink="/artist/manage-albums">Manage Albums</a>
+  </div>
+
+  <div class="dashboard-card">
+    <h3>Overview</h3>
+
+    <div class="stats">
+      <div class="stat-box">
+        <h3>{{ songs.length }}</h3>
+        <p>Total Songs</p>
+      </div>
+
+      <div class="stat-box">
+        <h3>{{ totalAlbums }}</h3>
+        <p>Total Albums</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-card">
+    <h4>Recent Songs</h4>
+
+    <div class="recent-song"
+         *ngFor="let song of songs | slice:0:3">
+      {{ song.title }}
+    </div>
+
+  </div>
+
+</div>
