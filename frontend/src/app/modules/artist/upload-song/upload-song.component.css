@@ -1,0 +1,13 @@
+form div {
+  margin-bottom: 10px;
+}
+
+input, select {
+  width: 300px;
+  padding: 5px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 6px 12px;
+}

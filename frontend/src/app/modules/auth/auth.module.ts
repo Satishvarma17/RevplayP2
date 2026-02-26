@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,    
   ],
   imports: [
     CommonModule,
@@ -17,3 +17,4 @@ import { RouterModule } from '@angular/router';
   ]
 })
 export class AuthModule { }
+
