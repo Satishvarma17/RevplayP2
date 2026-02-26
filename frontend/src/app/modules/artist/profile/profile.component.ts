@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ArtistService } from 'src/app/services/artist.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +19,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private artistService: ArtistService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -82,5 +84,10 @@ export class ProfileComponent implements OnInit {
       this.isEditMode = false;
       this.loadProfile();
     });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/home/login']);
   }
 }

@@ -40,11 +40,11 @@ public class    AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse register(RegisterRequest request) {
 
-        if (userRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.countByUsername(request.getUsername()) > 0) {
             throw new IllegalArgumentException("Username already exists");
         }
 
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.countByEmail(request.getEmail()) > 0) {
             throw new IllegalArgumentException("Email already exists");
         }
 
@@ -152,7 +152,7 @@ public class    AuthServiceImpl implements AuthService {
 
         String candidate = base;
         int suffix = 1;
-        while (userRepository.existsByUsername(candidate)) {
+        while (userRepository.countByUsername(candidate) > 0) {
             candidate = base + suffix;
             suffix++;
         }

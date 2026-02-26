@@ -21,6 +21,7 @@
     <p><strong>Website:</strong> {{ profileData.websiteLink }}</p>
 
     <button (click)="enableEdit()">Edit Profile</button>
+    <button (click)="logout()">Logout</button>
 
   </div>
 
@@ -68,6 +69,7 @@
 
       <button type="submit">Update</button>
       <button type="button" (click)="cancelEdit()">Cancel</button>
+      <button type="button" (click)="logout()">Logout</button>
 
     </form>
 
