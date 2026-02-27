@@ -1,3 +1,9 @@
-<h2>User Dashboard</h2>
-<p>Only USER role should access this page.</p>
-<button (click)="logout()">Logout</button>
+<section class="ui-page">
+  <div class="ui-card">
+    <h2 class="ui-title">User Dashboard</h2>
+    <p class="ui-subtitle">Only USER role should access this page.</p>
+    <div class="ui-actions">
+      <button type="button" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</section>

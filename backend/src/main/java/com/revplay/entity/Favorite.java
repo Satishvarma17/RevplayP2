@@ -1,40 +1,25 @@
 package com.revplay.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "favorites")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Favorite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long songId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    public Favorite() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getSongId() {
-        return songId;
-    }
-
-    public void setSongId(Long songId) {
-        this.songId = songId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

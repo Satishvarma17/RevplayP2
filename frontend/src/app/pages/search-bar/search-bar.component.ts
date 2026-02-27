@@ -4,12 +4,12 @@ import { SongService } from '../../services/song.service';
 
 @Component({
   selector: 'app-search',
-  templateUrl: './search.component.html'
+  templateUrl: './search-bar.component.html',
+  styleUrls: ['./search-bar.component.css']
 })
-export class SearchComponent implements OnInit {
-
+export class SearchBarComponent implements OnInit {
   results: any;
-  keyword: string = '';
+  keyword = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -17,13 +17,24 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.keyword = params['keyword'];
+    this.route.queryParams.subscribe((params) => {
+      this.keyword = params['keyword'] ?? '';
 
       if (this.keyword) {
-        this.songService.search(this.keyword)
-          .subscribe(data => this.results = data);
+        this.search();
       }
+    });
+  }
+
+  search(): void {
+    const term = this.keyword.trim();
+    if (!term) {
+      this.results = [];
+      return;
+    }
+
+    this.songService.search(term).subscribe((data) => {
+      this.results = data;
     });
   }
 }

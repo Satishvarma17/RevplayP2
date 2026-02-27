@@ -1,24 +1,39 @@
+.playlists-page {
+  display: grid;
+  gap: 14px;
+}
+
+.ui-card {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
 .playlist-title {
-  margin-bottom: 4px;
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  color: #f8fafc;
+}
+
+.playlist-description {
+  margin: 0 0 12px;
+  color: #94a3b8;
 }
 
 .action-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 8px;
   margin-bottom: 10px;
 }
 
 .song-add-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 10px;
 }
 
 .song-add-row select {
   flex: 1;
-  min-width: 220px;
+  min-width: 240px;
 }
 
 .song-row {
@@ -32,4 +47,9 @@
 
 .song-row:last-of-type {
   border-bottom: none;
+}
+
+.empty-note {
+  color: #94a3b8;
+  margin: 0 0 10px;
 }

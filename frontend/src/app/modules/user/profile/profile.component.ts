@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserProfile, UserService, UserStats } from 'src/app/core/services/user.service';
 
@@ -9,7 +8,7 @@ import { UserProfile, UserService, UserStats } from 'src/app/core/services/user.
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit {
 
   user: UserProfile = {
     username: '',
@@ -32,7 +31,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     totalFavorites: 0,
     totalListeningMinutes: 0
   };
-  private statsChangedSub?: Subscription;
 
   constructor(
     private userService: UserService,
@@ -43,13 +41,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadProfile();
     this.loadStats();
-    this.statsChangedSub = this.userService.onStatsChanged().subscribe(() => {
-      this.loadStats();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.statsChangedSub?.unsubscribe();
   }
 
   loadProfile(): void {
@@ -65,6 +56,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userService.getStats().subscribe({
       next: (res) => {
         this.stats = res;
+      },
+      error: (err) => {
+        console.error('Failed to load user stats', err);
       }
     });
   }

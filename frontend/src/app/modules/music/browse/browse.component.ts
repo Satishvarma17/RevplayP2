@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { FavoriteService } from 'src/app/core/services/favorite.service';
 import { LibrarySong, SongLibraryService } from 'src/app/core/services/song-library.service';
-import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-browse',
@@ -28,8 +27,7 @@ export class BrowseComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private songLibraryService: SongLibraryService,
-    private favoriteService: FavoriteService,
-    private userService: UserService
+    private favoriteService: FavoriteService
   ) {}
 
   ngOnInit(): void {
@@ -178,7 +176,6 @@ export class BrowseComponent implements OnInit {
       this.setFavorite(songId, false);
       this.favoriteService.remove(songId).subscribe({
         next: () => {
-          this.userService.notifyStatsChanged();
           this.processingSongIds.delete(songId);
         },
         error: (err) => {
@@ -192,7 +189,6 @@ export class BrowseComponent implements OnInit {
     this.setFavorite(songId, true);
     this.favoriteService.add(songId).subscribe({
       next: () => {
-        this.userService.notifyStatsChanged();
         this.processingSongIds.delete(songId);
       },
       error: (err) => {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FavoriteService } from 'src/app/core/services/favorite.service';
 import { SongLibraryService } from 'src/app/core/services/song-library.service';
-import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-favorites',
@@ -14,8 +13,7 @@ export class FavoritesComponent implements OnInit {
 
   constructor(
     private favoriteService: FavoriteService,
-    private songLibraryService: SongLibraryService,
-    private userService: UserService
+    private songLibraryService: SongLibraryService
   ) {}
 
   ngOnInit(): void {
@@ -38,9 +36,7 @@ export class FavoritesComponent implements OnInit {
     this.favorites = this.favorites.filter(song => song.id !== songId);
 
     this.favoriteService.remove(songId).subscribe({
-      next: () => {
-        this.userService.notifyStatsChanged();
-      },
+      next: () => {},
       error: (err) => {
         console.error('Failed to remove favorite', err);
         this.favorites = previousFavorites;

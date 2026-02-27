@@ -1,4 +1,4 @@
-package com.revplay.dto;
+package com.revplay.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

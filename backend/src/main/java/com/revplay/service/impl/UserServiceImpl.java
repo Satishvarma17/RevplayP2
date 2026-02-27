@@ -6,6 +6,7 @@ import com.revplay.dto.response.UserStatsResponse;
 import com.revplay.entity.Role;
 import com.revplay.entity.User;
 import com.revplay.repository.FavoriteRepository;
+import com.revplay.repository.ListeningHistoryRepository;
 import com.revplay.repository.PlaylistRepository;
 import com.revplay.repository.UserRepository;
 import com.revplay.service.UserService;
@@ -19,13 +20,16 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PlaylistRepository playlistRepository;
     private final FavoriteRepository favoriteRepository;
+    private final ListeningHistoryRepository listeningHistoryRepository;
 
     public UserServiceImpl(UserRepository userRepository,
                            PlaylistRepository playlistRepository,
-                           FavoriteRepository favoriteRepository) {
+                           FavoriteRepository favoriteRepository,
+                           ListeningHistoryRepository listeningHistoryRepository) {
         this.userRepository = userRepository;
         this.playlistRepository = playlistRepository;
         this.favoriteRepository = favoriteRepository;
+        this.listeningHistoryRepository = listeningHistoryRepository;
     }
 
     @Override
@@ -74,8 +78,10 @@ public class UserServiceImpl implements UserService {
         User user = getOrCreateUser(username);
         long totalPlaylists = playlistRepository.countByUser(user);
         long totalFavorites = favoriteRepository.countByUser(user);
+        long totalListeningSeconds = listeningHistoryRepository
+                .sumTotalListeningDurationByUserId(user.getId());
+        long totalListeningMinutes = (totalListeningSeconds + 59) / 60;
 
-        long totalListeningMinutes = 125;
         return new UserStatsResponse(totalPlaylists, totalFavorites, totalListeningMinutes);
     }
 

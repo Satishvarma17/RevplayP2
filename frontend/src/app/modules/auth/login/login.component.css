@@ -1,14 +1,9 @@
 .auth-switch {
-  margin-top: 12px;
+  margin-top: 14px;
+  color: #cbd5e1;
 }
 
-.auth-link {
-  color: #0a66c2;
-  text-decoration: underline;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.auth-link:hover {
-  color: #084d91;
+.ui-auth-card {
+  max-width: 460px;
+  margin: 8px auto 0;
 }

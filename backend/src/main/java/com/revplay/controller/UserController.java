@@ -4,10 +4,10 @@ import com.revplay.dto.request.UserProfileUpdateRequest;
 import com.revplay.dto.response.UserProfileResponse;
 import com.revplay.dto.response.UserStatsResponse;
 import com.revplay.service.UserService;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -36,8 +36,8 @@ public class UserController {
 
     @GetMapping("/stats")
     public ResponseEntity<UserStatsResponse> getMyStats(
-            @RequestParam String username) {
-        String normalizedUsername = normalizeUsername(username);
+            @RequestParam(required = false) String username) {
+        String normalizedUsername = resolveUsername(username);
         return ResponseEntity.ok(userService.getStats(normalizedUsername));
     }
 
@@ -51,5 +51,23 @@ public class UserController {
             return "satish";
         }
         return username.trim();
+    }
+
+    private String resolveUsername(String username) {
+        if (username != null && !username.trim().isEmpty()) {
+            return username.trim();
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String principalName = authentication.getName();
+            if (principalName != null
+                    && !principalName.trim().isEmpty()
+                    && !"anonymousUser".equalsIgnoreCase(principalName.trim())) {
+                return principalName.trim();
+            }
+        }
+
+        return "satish";
     }
 }
