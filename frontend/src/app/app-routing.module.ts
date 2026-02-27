@@ -46,6 +46,18 @@ const routes: Routes = [
     ...userOnly,
   },
   {
+    path: 'player',
+    loadChildren: () =>
+      import('./modules/player/player.module').then((m) => m.PlayerModule),
+    ...userOnly,
+  },
+  {
+    path: 'history',
+    loadChildren: () =>
+      import('./modules/history/history.module').then((m) => m.HistoryModule),
+    ...userOnly,
+  },
+  {
     path: 'user/dashboard',
     redirectTo: 'browse',
     pathMatch: 'full',
@@ -53,7 +65,7 @@ const routes: Routes = [
   {
     path: 'artist',
     loadChildren: () =>
-      import('./modules/artist/artist.module').then(m => m.ArtistModule),
+      import('./modules/artist/artist.module').then((m) => m.ArtistModule),
     canActivate: [AuthGuard, roleGuard],
     data: { role: 'ARTIST' },
   },

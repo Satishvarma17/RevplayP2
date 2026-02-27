@@ -46,8 +46,13 @@ export class RegisterComponent {
         this.router.navigate(['/home/login']);
       },
       error: (error) => {
+        const backendMessage =
+          error?.error?.message ||
+          error?.error?.error ||
+          error?.message ||
+          '';
         this.errorMessage =
-          error?.error?.message || 'Registration failed. Please try again.';
+          backendMessage || 'Registration failed. Please try again.';
         this.loading = false;
       },
     });

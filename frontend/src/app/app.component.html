@@ -51,6 +51,8 @@
       </div>
     </div>
     <nav class="nav-links" *ngIf="authService.getUserRole() === 'USER'">
+      <a routerLink="/player" routerLinkActive="active">Player</a>
+      <a routerLink="/history" routerLinkActive="active">History</a>
       <a routerLink="/browse" routerLinkActive="active">Browse</a>
       <a routerLink="/favorites" routerLinkActive="active">Favorites</a>
       <a routerLink="/playlists" routerLinkActive="active">Playlists</a>

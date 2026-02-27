@@ -5,10 +5,23 @@
 </div>
 
 <div *ngFor="let song of pagedSongs" class="card browse-row">
-  <div class="song-main">
+  <div
+    class="song-main song-main-clickable"
+    role="button"
+    tabindex="0"
+    (click)="playSong(song.id)"
+    (keydown.enter)="playSong(song.id)"
+    (keydown.space)="playSong(song.id)">
     <p class="song-title">{{ song.title }}</p>
   </div>
   <div class="song-actions">
+    <button
+      type="button"
+      class="play-toggle"
+      (click)="playSong(song.id)"
+      aria-label="Play song">
+      Play
+    </button>
     <button
       type="button"
       class="view-toggle"

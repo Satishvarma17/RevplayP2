@@ -1,4 +1,4 @@
-package com.revplay.dto;
+package com.revplay.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,12 +10,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumDetailsDTO {
+public class AlbumDTO {
 
     private Long id;
     private String name;
     private LocalDate releaseDate;
-    private String artistName;
 
     private List<SongDTO> songs;
 }

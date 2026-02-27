@@ -173,7 +173,8 @@ public class SongServiceImpl implements SongService {
                 .title(song.getTitle())
                 .genre(song.getGenre())
                 .duration(song.getDuration())
-                .visibility(song.getVisibility())   // Enum directly
+                .audioFileUrl(song.getAudioFileUrl())
+                .visibility(song.getVisibility())
                 .artistName(song.getArtist().getArtistName())
                 .albumName(song.getAlbum() != null ? song.getAlbum().getName() : null)
                 .albumId(song.getAlbum() != null ? song.getAlbum().getId() : null)

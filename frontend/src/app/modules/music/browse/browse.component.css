@@ -17,6 +17,16 @@
   gap: 4px;
 }
 
+.song-main-clickable {
+  cursor: pointer;
+}
+
+.song-main-clickable:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
 .song-title {
   margin: 0;
   font-weight: 600;
@@ -56,6 +66,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.play-toggle {
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: rgba(15, 23, 42, 0.85);
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.play-toggle:hover {
+  background: rgba(30, 41, 59, 0.95);
 }
 
 .view-toggle svg {

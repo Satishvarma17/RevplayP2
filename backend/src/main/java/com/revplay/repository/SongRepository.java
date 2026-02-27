@@ -9,17 +9,13 @@ import java.util.Optional;
 
 public interface SongRepository extends JpaRepository<Song, Long> {
 
-    // Get all songs by an artist
     List<Song> findByArtistId(Long artistId);
 
-    // Get songs by visibility (PUBLIC / UNLISTED)
     List<Song> findByVisibility(Visibility visibility);
+
     Optional<Song> findByIdAndVisibility(Long id, Visibility visibility);
 
-
-    // Get songs by artist and visibility
     List<Song> findByArtistIdAndVisibility(Long artistId, Visibility visibility);
 
-    // Count songs in a specific album
     long countByAlbumId(Long albumId);
 }
