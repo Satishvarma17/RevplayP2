@@ -33,14 +33,14 @@
       <li class="song-card" *ngFor="let song of songs">
         <div class="song-header">
           <b>{{ song.title }}</b>
-          <a [routerLink]="['/song', song.id]">View Details</a>
+          <a [routerLink]="['/browse', song.id]">View Details</a>
         </div>
         <div class="song-meta">
           Artist:
-          <a *ngIf="song.artistId; else artistText" [routerLink]="['/artist', song.artistId]">{{ song.artistName }}</a>
+          <a *ngIf="song.artistId; else artistText" [routerLink]="['/browse/artist', song.artistId]">{{ song.artistName }}</a>
           <ng-template #artistText>{{ song.artistName }}</ng-template>
           | Album:
-          <a *ngIf="song.albumId; else albumText" [routerLink]="['/album', song.albumId]">{{ song.albumName }}</a>
+          <a *ngIf="song.albumId; else albumText" [routerLink]="['/browse/album', song.albumId]">{{ song.albumName }}</a>
           <ng-template #albumText>{{ song.albumName }}</ng-template>
           | Genre: {{ song.genre }} | Duration: {{ song.duration }} sec | Release: {{ song.releaseDate }}
         </div>
@@ -52,7 +52,7 @@
     <h3>Artists</h3>
     <ul>
       <li *ngFor="let artist of artists">
-        <a [routerLink]="['/artist', artist.id]">{{ artist.name }}</a>
+        <a [routerLink]="['/browse/artist', artist.id]">{{ artist.name }}</a>
       </li>
     </ul>
   </div>
@@ -61,7 +61,7 @@
     <h3>Albums</h3>
     <ul>
       <li *ngFor="let album of albums">
-        <a [routerLink]="['/album', album.id]">{{ album.name }}</a>
+        <a [routerLink]="['/browse/album', album.id]">{{ album.name }}</a>
       </li>
     </ul>
   </div>

@@ -40,9 +40,12 @@ export class AppComponent {
   @HostListener('document:click', ['$event'])
   handleDocumentClick(event: MouseEvent): void {
     const target = event.target as Node;
-    const clickedInside = this.elementRef.nativeElement
-      .querySelector('.nav-search-wrap')
-      ?.contains(target);
+    const navSearchWrap = this.elementRef.nativeElement.querySelector('.nav-search-wrap');
+    const userSearchTools = this.elementRef.nativeElement.querySelector('.user-search-tools');
+    const clickedInside = !!(
+      navSearchWrap?.contains(target) ||
+      userSearchTools?.contains(target)
+    );
 
     if (clickedInside) {
       return;

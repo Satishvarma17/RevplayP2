@@ -44,7 +44,7 @@ public class SongServiceImpl implements SongService {
                 .genre(request.getGenre())
                 .duration(request.getDuration())
                 .audioFileUrl(filePath)
-                .visibility(request.getVisibility())   // ✅ Correct
+                .visibility(request.getVisibility())   
                 .artist(artist)
                 .build();
 

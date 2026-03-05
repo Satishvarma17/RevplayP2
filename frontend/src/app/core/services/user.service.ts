@@ -23,7 +23,6 @@ export interface UserProfileUpdate {
 export interface UserStats {
   totalPlaylists: number;
   totalFavorites: number;
-  totalListeningMinutes: number;
 }
 
 @Injectable({

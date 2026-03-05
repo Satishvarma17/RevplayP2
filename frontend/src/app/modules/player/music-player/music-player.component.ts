@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Song, SongService } from 'src/app/core/service/song.service';
-import { ListeningHistoryService } from 'src/app/core/service/listening-history.service';
+import { Song, SongService } from 'src/app/core/services/player-song.service';
+import { ListeningHistoryService } from 'src/app/core/services/listening-history.service';
 
 @Component({
   selector: 'app-music-player',
@@ -198,3 +198,4 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
     });
   }
 }
+
