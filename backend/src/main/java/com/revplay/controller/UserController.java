@@ -6,8 +6,10 @@ import com.revplay.dto.response.UserStatsResponse;
 import com.revplay.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,7 +24,7 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<UserProfileResponse> getMyProfile(
             @RequestParam String username) {
-        String normalizedUsername = normalizeUsername(username);
+        String normalizedUsername = resolveUsername(username);
         return ResponseEntity.ok(userService.getProfile(normalizedUsername));
     }
 
@@ -30,7 +32,7 @@ public class UserController {
     public ResponseEntity<UserProfileResponse> updateMyProfile(
             @RequestParam String username,
             @RequestBody UserProfileUpdateRequest updatedUser) {
-        String normalizedUsername = normalizeUsername(username);
+        String normalizedUsername = resolveUsername(username);
         return ResponseEntity.ok(userService.updateProfile(normalizedUsername, updatedUser));
     }
 
@@ -47,10 +49,11 @@ public class UserController {
     }
 
     private String normalizeUsername(String username) {
-        if (username == null || username.trim().isEmpty()) {
-            return "satish";
+        String normalized = username == null ? "" : username.trim();
+        if (normalized.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is required");
         }
-        return username.trim();
+        return normalized;
     }
 
     private String resolveUsername(String username) {
@@ -68,6 +71,6 @@ public class UserController {
             }
         }
 
-        return "satish";
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username is required");
     }
 }

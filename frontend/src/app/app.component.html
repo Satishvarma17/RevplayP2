@@ -1,5 +1,5 @@
 <div class="app-shell">
-  <header class="top-nav" *ngIf="authService.isLoggedIn() && !router.url.startsWith('/home')">
+  <header class="top-nav" [class.user-layout]="authService.getUserRole() === 'USER'" *ngIf="authService.isLoggedIn() && !router.url.startsWith('/home')">
     <div class="nav-left">
       <div class="brand">RevPlay</div>
       <div class="nav-search-wrap" *ngIf="authService.getUserRole() === 'USER'" [class.expanded]="searchExpanded">
@@ -12,42 +12,6 @@
             (focus)="onSearchFocus()"
           />
         </form>
-
-        <div class="search-tools" *ngIf="searchExpanded">
-          <input
-            type="text"
-            name="artistFilter"
-            placeholder="Filter by artist"
-            [(ngModel)]="artistFilter"
-          />
-          <input
-            type="text"
-            name="albumFilter"
-            placeholder="Filter by album"
-            [(ngModel)]="albumFilter"
-          />
-          <input
-            type="text"
-            name="genreFilter"
-            placeholder="Filter by genre"
-            [(ngModel)]="genreFilter"
-          />
-          <input
-            type="date"
-            name="releaseDateFilter"
-            [(ngModel)]="releaseDateFilter"
-          />
-          <select name="sortBy" [(ngModel)]="sortBy">
-            <option value="">Sort: none</option>
-            <option value="releaseDateDesc">Release Date (Newest)</option>
-            <option value="releaseDateAsc">Release Date (Oldest)</option>
-            <option value="artistAsc">Artist A-Z</option>
-            <option value="albumAsc">Album A-Z</option>
-            <option value="genreAsc">Genre A-Z</option>
-          </select>
-          <button type="button" (click)="applySearchOptions()">Apply</button>
-          <button type="button" (click)="clearSearchOptions()">Clear</button>
-        </div>
       </div>
     </div>
     <nav class="nav-links" *ngIf="authService.getUserRole() === 'USER'">
@@ -65,6 +29,51 @@
       <a routerLink="/artist/manage-albums" routerLinkActive="active">Albums</a>
       <a routerLink="/artist/profile" routerLinkActive="active">Profile</a>
     </nav>
+    <div class="user-search-tools" *ngIf="authService.getUserRole() === 'USER' && searchExpanded">
+      <div class="search-tools">
+        <input
+          type="text"
+          name="artistFilter"
+          placeholder="Artist"
+          aria-label="Filter by artist"
+          title="Filter by artist"
+          [(ngModel)]="artistFilter"
+        />
+        <input
+          type="text"
+          name="albumFilter"
+          placeholder="Album"
+          aria-label="Filter by album"
+          title="Filter by album"
+          [(ngModel)]="albumFilter"
+        />
+        <input
+          type="text"
+          name="genreFilter"
+          placeholder="Genre"
+          aria-label="Filter by genre"
+          title="Filter by genre"
+          [(ngModel)]="genreFilter"
+        />
+        <input
+          type="date"
+          name="releaseDateFilter"
+          aria-label="Filter by release date"
+          title="Filter by release date"
+          [(ngModel)]="releaseDateFilter"
+        />
+        <select name="sortBy" [(ngModel)]="sortBy">
+          <option value="">Sort: none</option>
+          <option value="releaseDateDesc">Release Date (Newest)</option>
+          <option value="releaseDateAsc">Release Date (Oldest)</option>
+          <option value="artistAsc">Artist A-Z</option>
+          <option value="albumAsc">Album A-Z</option>
+          <option value="genreAsc">Genre A-Z</option>
+        </select>
+        <button type="button" (click)="applySearchOptions()">Apply</button>
+        <button type="button" (click)="clearSearchOptions()">Clear</button>
+      </div>
+    </div>
   </header>
 
   <main class="content">

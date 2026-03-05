@@ -1,8 +1,8 @@
 import { of, throwError } from 'rxjs';
 
 import { MusicPlayerComponent } from './music-player.component';
-import { SongService, Song } from 'src/app/core/service/song.service';
-import { ListeningHistoryService } from 'src/app/core/service/listening-history.service';
+import { SongService, Song } from 'src/app/core/services/player-song.service';
+import { ListeningHistoryService } from 'src/app/core/services/listening-history.service';
 
 class AudioMock {
   currentTime = 0;
@@ -98,3 +98,4 @@ describe('MusicPlayerComponent (simple Jasmine tests)', () => {
     expect(component.isPlaying).toBeFalse();
   });
 });
+

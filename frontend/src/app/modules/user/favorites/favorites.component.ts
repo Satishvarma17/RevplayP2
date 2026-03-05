@@ -40,7 +40,7 @@ export class FavoritesComponent implements OnInit {
       error: (err) => {
         console.error('Failed to remove favorite', err);
         this.favorites = previousFavorites;
-        this.loadFavorites();
+        this.loadFavorites(); 
       }
     });
   }

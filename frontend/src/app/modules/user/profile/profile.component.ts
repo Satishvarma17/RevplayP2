@@ -28,8 +28,7 @@ export class ProfileComponent implements OnInit {
   isSaving = false;
   stats: UserStats = {
     totalPlaylists: 0,
-    totalFavorites: 0,
-    totalListeningMinutes: 0
+    totalFavorites: 0
   };
 
   constructor(

@@ -18,14 +18,6 @@ public class ArtistController {
 
     private final ArtistService artistService;
 
-//  //register
-//    @PostMapping
-//    public ResponseEntity<?> registerArtist(@RequestBody Artist artist) {
-//
-//        Artist savedArtist = artistService.registerArtist(artist);
-//
-//        return ResponseEntity.ok(savedArtist);
-//    }
 
 
     // GET Artist Profile
