@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SongService } from '../../services/song.service';
+import { SongService } from 'src/app/core/services/public-song.service';
 
 @Component({
   selector: 'app-artist-profile',
@@ -20,3 +20,4 @@ export class ArtistProfileComponent implements OnInit {
     this.songService.getArtistById(id).subscribe(data => (this.artist = data));
   }
 }
+

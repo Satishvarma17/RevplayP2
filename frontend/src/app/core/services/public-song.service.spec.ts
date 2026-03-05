@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SongService } from './song.service';
+import { SongService } from './public-song.service';
 
 describe('SongService', () => {
   let service: SongService;
@@ -14,3 +14,5 @@ describe('SongService', () => {
     expect(service).toBeTruthy();
   });
 });
+
+

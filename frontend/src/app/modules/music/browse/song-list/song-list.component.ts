@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SongService } from '../../services/song.service';
+import { SongService } from 'src/app/core/services/public-song.service';
 
 interface SongFilters {
   title: string;
@@ -211,3 +211,4 @@ export class SongListComponent implements OnInit {
     return (dateValue ?? '').toString().slice(0, 4);
   }
 }
+

@@ -102,7 +102,7 @@ export class AuthService {
       return fromToken;
     }
 
-    return 'satish';
+    return '';
   }
 
   setCurrentUsername(username: string): void {
